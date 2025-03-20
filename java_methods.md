@@ -73,22 +73,58 @@ public class ReturnExample {
 ---
 
 ## **6. Method Overloading**
+Basiclly it is methods with the same name but different parameters 
 ```java
 public class OverloadingExample {
-    static int multiply(int a, int b) {
+    static int multiply(int a, int b) {// first mutiply method is using int for input
         return a * b;
     }
 
-    static double multiply(double a, double b) {
+    static double multiply(double a, double b) { //second mutiply method is using double for input 
         return a * b;
     }
 
     public static void main(String[] args) {
         System.out.println("Multiply Integers: " + multiply(3, 4));
-        System.out.println("Multiply Doubles: " + multiply(2.5, 3.5));
+        System.out.println("Multiply Doubles: " + multiply(2.5, 3.5));】 will call second method 
     }
 }
 ```
+### advantage of Overloading
+**Benefits of Method Overloading**
+1. Increases Code Readability & Maintainability
+2. Methods with the same name but different parameters make the code more readable.
+3. Developers can understand that all overloaded methods perform similar actions, just with different input types.
+
+### Disadvantages of Method Overloading
+**Can Lead to Code Confusion**
+If too many overloaded methods exist in a class, it becomes difficult to understand which method is being called.
+```
+class Confusing {
+    void test(int a) {}
+    void test(double a) {}
+    void test(float a) {}
+    void test(long a) {}
+    void test(short a) {}
+    void test(byte a) {}
+}
+
+```
+**No Support for Differentiating by Return Type Alone**
+Java does not allow method overloading if the only difference is the return type.
+Example (Invalid Overloading):
+```
+class InvalidOverload {
+    int sum(int a, int b) {
+        return a + b;
+    }
+    double sum(int a, int b) {  // ❌ Compilation error
+        return a + b;
+    }
+}
+```
+
+
 
 ---
 
@@ -120,6 +156,7 @@ public class RecursionExample {
 public class AccessModifiersExample {
     public void publicMethod() {
         System.out.println("This is a public method.");
+//anyone can call ut 
     }
 
     private void privateMethod() {
