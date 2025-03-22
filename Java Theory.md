@@ -65,14 +65,30 @@ As list size increases, more elements need to be moved, which slows down perform
 **Characteristics:**
 * Implemented as a doubly linked list
 
-*this means it uses a chain of nodes, and each node stores two links:
+**this means it uses a chain of nodes, and each node stores two links:**
   * A reference to the previous node
   * A reference to the next node
-  * And of course, it stores the data (value) itself
+  * It stores the data (value) itself
+**Visual Diagram of a Doubly Linked List:**
+```
+null ← [A] ⇄ [B] ⇄ [C] → null
+         ↑      ↑
+       prev   next
+```
+* [A] is the first node
+* [B] is the second node
+* [C] is the third node
+**Each node knows:**
+* Who comes before it (prev)
+* Who comes after it (next)
 
   
-Fast insertions/deletions at the beginning/middle
-Slower random access (must traverse node by node)
+* Fast insertions/deletions at the beginning/middle**(inserting or deleting is easy — just change a few pointers)
+* Slower random access** (To find an item, it must walk through the list)
+
+
+还没写完后面的set我还没学
+
 
 
 
