@@ -24,6 +24,35 @@ public class MyThread extends Thread {
     }
 }
 ```
+Since threads run concurrently, the order of output is not guaranteed. It can vary every time you run the program.
+the result may be:
+```
+Main Thread: 0
+Child Thread: 0
+Child Thread: 1
+Main Thread: 1
+Main Thread: 2
+Child Thread: 2
+Main Thread: 3
+Child Thread: 3
+Main Thread: 4
+Child Thread: 4
+```
+or 
+```
+Child Thread: 0
+Child Thread: 1
+Child Thread: 2
+Main Thread: 0
+Child Thread: 3
+Main Thread: 1
+Child Thread: 4
+Main Thread: 2
+Main Thread: 3
+Main Thread: 4
+```
+The order will be randomly displayed 
+
 ### 🔹 Method 2: Implement the `Runnable` interface (✅ Recommended)
 ```java
 public class MyRunnable implements Runnable {
@@ -42,9 +71,17 @@ public class MyRunnable implements Runnable {
         }
     }
 }
-```
+The output is will be in the same situation as Thread, order can not be guaranteed, it will chaneg every time 
+
 > ✅ Use `Runnable` when you want more flexibility (e.g., using thread pools).
 ---
+|Feature	|Thread Class|	Runnable Interface｜
+|Type	|Class (extends Thread)|	Interface (implements Runnable)｜
+|Inheritance	|Can’t extend other classes|	Can extend other classes (better flexibility)｜
+|Best use case	|Simple one-off threads|	Recommended for reusability & thread pooling｜
+|Used with	|new MyThread().start()|	new Thread(new MyRunnable()).start()｜
+
+
 ## 2. Thread Methods
 | Method      | Description                          |
 |-------------|--------------------------------------|
