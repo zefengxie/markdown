@@ -71,16 +71,21 @@ public class MyRunnable implements Runnable {
         }
     }
 }
+```
 The output is will be in the same situation as Thread, order can not be guaranteed, it will chaneg every time 
 
-> ✅ Use `Runnable` when you want more flexibility (e.g., using thread pools).
----
-|Feature	|Thread Class|	Runnable Interface｜
-|Type	|Class (extends Thread)|	Interface (implements Runnable)｜
-|Inheritance	|Can’t extend other classes|	Can extend other classes (better flexibility)｜
-|Best use case	|Simple one-off threads|	Recommended for reusability & thread pooling｜
-|Used with	|new MyThread().start()|	new Thread(new MyRunnable()).start()｜
 
+> ✅ Use `Runnable` when you want more flexibility (e.g., using thread pools).
+This is different between Thread class an runable Interface
+```
+---
+|Feature	   | Thread Class               |	Runnable Interface                           ｜
+|Type	        |  Class (extends Thread)    |	Interface (implements Runnable)              ｜
+|Inheritance	| Can’t extend other classes |	Can extend other classes (better flexibility)｜
+|Best use case	| Simple one-off threads     |	Recommended for reusability & thread pooling ｜
+|Used with     	| new MyThread().start()     |	new Thread(new MyRunnable()).start()         ｜
+>
+```
 
 ## 2. Thread Methods
 | Method      | Description                          |
@@ -108,6 +113,7 @@ public class SleepExample extends Thread {
 ---
 ## 3. Thread Safety with `synchronized`
 ### ❌ Problem: Race condition when accessing shared variable
+When multiple threads access and modify a shared variable at the same time, it can lead to inconsistent or incorrect results. This is called a race condition.
 ```java
 public class UnsafeCounter {
     static int count = 0;
@@ -127,10 +133,26 @@ public class UnsafeCounter {
             t1.join(); t2.join();
         } catch (InterruptedException e) {}
 
-        System.out.println("Final Count: " + count); // Not always 2000
+        System.out.println("Final Count: " + count); // Not always 2000 sometime is less than that number
     }
 }
 ```
+### System.out.println("Final Count: " + count); // Not always 2000 sometime is less than that number, It because count++ is not atomic.
+count++ actually does 3 steps behind the scenes
+```
+// Internally, this is what happens:
+1. Read the current value of count from memory
+2. Add 1 to the value
+3. Write the new value back to memory
+```
+```
+Thread A reads count = 42
+Thread B also reads count = 42
+Both add 1 → get 43
+Both write back 43
+Result: count went from 42 → 43 instead of 44 
+```
+
 ### ✅ Solution: Use `synchronized`
 ```java
 public class SafeCounter {
@@ -159,6 +181,14 @@ public class SafeCounter {
     }
 }
 ```
+this Synchronized tell program taht Only one thread is allowed to enter this method at a time — others must wait
+The step now will 
+```
+| 	| Thread A| Thread B |
+| 1 | Locks the method	| Waits (blocked)
+| 2	| Safely does count++ | do nothing |	
+| 3	| Unlocks the method | Starts now|
+```
 ---
 ## 4. Thread Communication with `wait()` / `notify()`
 Used when **threads need to cooperate**, like in **Producer-Consumer problems**.
@@ -185,23 +215,3 @@ public class ThreadPoolExample {
 }
 ```
 ---
-## 🧠 Exercises
-### 1. Alternate printing using threads
-```
-Thread A prints "A"
-Thread B prints "B"
-Repeat A B A B ... 10 times
-```
-### 2. Thread-safe counter
-- Shared variable `count`
-- Two threads add to `count`
-- Use `synchronized` to ensure thread safety
-### 3. Thread pool task manager
-- Create a thread pool of size 3
-- Submit 5 tasks
-- Each task should print its number and thread name
----
-Would you like me to prepare:
-- A downloadable `.md` version?
-- Real Java files you can run?
-- Next topic: Thread communication or GUI with threads?
